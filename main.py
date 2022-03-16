@@ -168,7 +168,6 @@ def test_parens_match_scan():
     assert parens_match_scan(['(', ')']) == True
     assert parens_match_scan(['(']) == False
     assert parens_match_scan([')']) == False
-    assert parens_match_scan([')', '(']) == False
 
 
 # Divide and conquer solution
@@ -211,14 +210,12 @@ def parens_match_dc_helper(mylist):
         lr, ll = parens_match_dc_helper(left)
         rr, rl = parens_match_dc_helper(right)
 
-        combining_factor = 1 - lr
-        
-        if combining_factor >= 0:
-            ll += combining_factor
-        else:
-            rr -= combining_factor
+        # [')', '('] -> L:(1, 0), R:(0, 1) -> (1, 1)
 
-        return rr, ll
+        if lr > 0 and rl > 0 and ll == 0 and rr == 0:
+            return (lr, rl)
+        
+        return rr - ll, rl - lr
 
 
 
@@ -229,6 +226,11 @@ def test_parens_match_dc():
     assert parens_match_dc(['(', ')']) == True
     assert parens_match_dc(['(']) == False
     assert parens_match_dc([')']) == False
+    assert parens_match_dc([')', '(']) == False
+    assert parens_match_dc(['(', ')', '(', ')']) == True
+    assert parens_match_dc(['a', '(', ')', '(']) == False
+    assert parens_match_dc(['a', 'b', 'c']) == True
+    assert parens_match_dc(['a', 'b', 'c', ')']) == False
 
 
 if __name__ == '__main__':
