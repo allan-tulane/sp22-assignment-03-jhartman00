@@ -25,10 +25,10 @@ def parens_match_iterative(mylist):
     False
     """
     x = iterate(parens_update, 0, mylist)
-    if x != 0:
-        return False
-    else:
+    if x == 0:
         return True
+    else:
+        return False
 
 
 def iterate(f, x, a):
@@ -59,29 +59,25 @@ def parens_update(current_output, next_input):
     """
     if next_input == "(":
         current_output += 1
+    elif next_input == ")" and current_output <= 0:
+        current_output = -99999999
     elif next_input == ")":
         current_output -= 1
     return current_output
 
 
 def test_parens_match_iterative():
-    assert parens_match_iterative(['(', ')']) == True
-    assert parens_match_iterative(['(']) == False
-    assert parens_match_iterative([')']) == False
-    # assert parens_match_iterative([')', '(']) == False
-
-
-def reduce(f, id_, a):
-    # done. do not change me.
-    if len(a) == 0:
-        return id_
-    elif len(a) == 1:
-        return a[0]
-    else:
-        # can call these in parallel
-        res = f(reduce(f, id_, a[:len(a) // 2]),
-                reduce(f, id_, a[len(a) // 2:]))
-        return res
+    assert parens_match_dc(['(', ')']) == True
+    assert parens_match_dc(['(']) == False
+    assert parens_match_dc([')']) == False
+    assert parens_match_dc([')', '(']) == False
+    assert parens_match_dc(['(', ')', '(', ')']) == True
+    assert parens_match_dc(['a', '(', ')', '(']) == False
+    assert parens_match_dc(['a', 'b', 'c']) == True
+    assert parens_match_dc(['a', 'b', 'c', ')']) == False
+    assert parens_match_dc(['(', 'a', 'b', 'c']) == False
+    assert parens_match_iterative([')', '(']) == False
+    assert parens_match_iterative([')', '(', ')']) == False
 
 
 # Scan solution
@@ -106,6 +102,12 @@ def parens_match_scan(mylist):
 
     mapped = list(map(lambda x: paren_map(x), mylist))
 
+    for i in mapped:
+        if i == -1:
+            return False
+        if i == 1:
+            break
+    
     scanned = scan(add, 0, mapped)[0]
 
     reduced = reduce(min_f, 0, scanned)
@@ -114,6 +116,20 @@ def parens_match_scan(mylist):
         return False
     else:
         return True
+
+
+def reduce(f, id_, a):
+    # done. do not change me.
+    if len(a) == 0:
+        return id_
+    elif len(a) == 1:
+        return a[0]
+    else:
+        # can call these in parallel
+        res = f(reduce(f, id_, a[:len(a) // 2]),
+                reduce(f, id_, a[len(a) // 2:]))
+        return res
+
 
 
 def scan(f, id_, a):
@@ -166,10 +182,17 @@ def min_f(x, y):
 
 
 def test_parens_match_scan():
-    assert parens_match_scan(['(', ')']) == True
-    assert parens_match_scan(['(']) == False
-    assert parens_match_scan([')']) == False
-
+    assert parens_match_dc(['(', ')']) == True
+    assert parens_match_dc(['(']) == False
+    assert parens_match_dc([')']) == False
+    assert parens_match_dc([')', '(']) == False
+    assert parens_match_dc(['(', ')', '(', ')']) == True
+    assert parens_match_dc(['a', '(', ')', '(']) == False
+    assert parens_match_dc(['a', 'b', 'c']) == True
+    assert parens_match_dc(['a', 'b', 'c', ')']) == False
+    assert parens_match_dc(['(', 'a', 'b', 'c']) == False
+    assert parens_match_iterative([')', '(']) == False
+    assert parens_match_iterative([')', '(', ')']) == False
 
 # Divide and conquer solution
 
@@ -233,6 +256,8 @@ def test_parens_match_dc():
     assert parens_match_dc(['a', 'b', 'c']) == True
     assert parens_match_dc(['a', 'b', 'c', ')']) == False
     assert parens_match_dc(['(', 'a', 'b', 'c']) == False
+    assert parens_match_iterative([')', '(']) == False
+    assert parens_match_iterative([')', '(', ')']) == False
 
 
 if __name__ == '__main__':
