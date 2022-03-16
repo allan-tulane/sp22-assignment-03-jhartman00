@@ -68,6 +68,7 @@ def test_parens_match_iterative():
     assert parens_match_iterative(['(', ')']) == True
     assert parens_match_iterative(['(']) == False
     assert parens_match_iterative([')']) == False
+    # assert parens_match_iterative([')', '(']) == False
 
 
 def reduce(f, id_, a):
@@ -231,6 +232,7 @@ def test_parens_match_dc():
     assert parens_match_dc(['a', '(', ')', '(']) == False
     assert parens_match_dc(['a', 'b', 'c']) == True
     assert parens_match_dc(['a', 'b', 'c', ')']) == False
+    assert parens_match_dc(['(', 'a', 'b', 'c']) == False
 
 
 if __name__ == '__main__':
