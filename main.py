@@ -102,15 +102,23 @@ def parens_match_scan(mylist):
 
     mapped = list(map(lambda x: paren_map(x), mylist))
 
+    #map = O(n)
+    
     for i in mapped:
         if i == -1:
             return False
         if i == 1:
             break
+
+    #Scan = O(n) work, O(log n) span
     
     scanned = scan(add, 0, mapped)[0]
 
+    #Reduce = O(n) work, O(log n) span
+    
     reduced = reduce(min_f, 0, scanned)
+
+    #Re
 
     if reduced != 0:
         return False
