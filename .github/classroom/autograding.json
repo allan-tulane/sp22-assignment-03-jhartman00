@@ -3,16 +3,6 @@
     {
       "name": "autograde",
       "setup": "sudo -H pip3 install pytest",
-      "run": "pytest main.py",
-      "input": "",
-      "output": "",
-      "comparison": "included",
-      "timeout": 10,
-      "points": null
-    },
-    {
-      "name": "autograde2",
-      "setup": "sudo -H pip3 install pytest",
       "run": "python main.py",
       "input": "",
       "output": "",
