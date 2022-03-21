@@ -100,7 +100,7 @@ def parens_match_scan(mylist):
 
     """
 
-    mapped = list(map(lambda x: paren_map(x), mylist))
+    mapped = list(map(paren_map(), mylist))
 
     #map = O(n)
     
